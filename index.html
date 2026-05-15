@@ -27,11 +27,17 @@
     <main class="image-stage" aria-label="Marble Cake Family artwork">
       <div class="image-stage__camera">
         <div class="image-stage__drift">
-          <img
-            class="image-stage__background"
-            src="/assets/marble-cake.png"
-            alt="Marble Cake Family artwork"
-          />
+          <video
+            class="image-stage__background image-stage__background-video"
+            src="/assets/marble-cake-scroll-video.mp4"
+            poster="/assets/marble-cake-video-poster.jpg"
+            preload="auto"
+            playsinline
+            muted
+            disablepictureinpicture
+            data-scroll-scrub-video
+            aria-hidden="true"
+          ></video>
           <img
             class="image-stage__car"
             src="/assets/car-and-dummee.png"

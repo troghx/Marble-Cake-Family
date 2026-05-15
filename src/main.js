@@ -2,10 +2,15 @@ import './styles.css';
 
 const root = document.documentElement;
 const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+const scrollScrubVideo = document.querySelector('[data-scroll-scrub-video]');
 
 let targetProgress = 0;
 let currentProgress = 0;
 let frameRequest = 0;
+let scrollVideoDuration = 0;
+let lastScrollVideoFrame = -1;
+
+const SCROLL_VIDEO_FRAME_RATE = 24;
 
 const clampProgress = (value) => Math.min(1, Math.max(0, value));
 
@@ -36,6 +41,43 @@ const setLengthProperty = (name, value, unit) => {
   root.style.setProperty(name, `${value.toFixed(3)}${unit}`);
 };
 
+const syncScrollVideo = (progress, force = false) => {
+  if (!scrollScrubVideo || scrollVideoDuration <= 0) {
+    return;
+  }
+
+  const maxFrame = Math.max(1, Math.floor(scrollVideoDuration * SCROLL_VIDEO_FRAME_RATE) - 1);
+  const frame = Math.round(clampProgress(progress) * maxFrame);
+
+  if (!force && frame === lastScrollVideoFrame) {
+    return;
+  }
+
+  lastScrollVideoFrame = frame;
+
+  const targetTime = Math.min(scrollVideoDuration - 0.035, frame / SCROLL_VIDEO_FRAME_RATE);
+
+  if (!Number.isFinite(targetTime) || Math.abs(scrollScrubVideo.currentTime - targetTime) < 0.018) {
+    return;
+  }
+
+  scrollScrubVideo.currentTime = Math.max(0, targetTime);
+};
+
+const prepareScrollVideo = () => {
+  if (!scrollScrubVideo) {
+    return;
+  }
+
+  scrollScrubVideo.muted = true;
+  scrollScrubVideo.pause();
+
+  if (Number.isFinite(scrollScrubVideo.duration) && scrollScrubVideo.duration > 0) {
+    scrollVideoDuration = scrollScrubVideo.duration;
+    syncScrollVideo(currentProgress, true);
+  }
+};
+
 const writeProgress = (progress) => {
   const inverseProgress = 1 - progress;
   const titleExit = smoothstep(0.07, 0.18, progress);
@@ -56,6 +98,8 @@ const writeProgress = (progress) => {
   setNumericProperty('--copy-two-opacity', copyTwoPresence);
   setLengthProperty('--copy-two-y', (1 - copyTwoPresence) * 11, 'dvh');
   setLengthProperty('--copy-two-blur', (1 - copyTwoPresence) * 18, 'px');
+
+  syncScrollVideo(progress);
 };
 
 const settleProgress = () => {
@@ -95,3 +139,13 @@ resetProgress();
 window.addEventListener('scroll', requestProgressUpdate, { passive: true });
 window.addEventListener('resize', resetProgress);
 reduceMotionQuery.addEventListener('change', resetProgress);
+
+if (scrollScrubVideo) {
+  scrollScrubVideo.addEventListener('loadedmetadata', prepareScrollVideo);
+  scrollScrubVideo.addEventListener('canplay', prepareScrollVideo, { once: true });
+  scrollScrubVideo.addEventListener('play', () => scrollScrubVideo.pause());
+
+  if (scrollScrubVideo.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    prepareScrollVideo();
+  }
+}

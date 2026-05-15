@@ -46,5 +46,6 @@ Netlify quedó desactivado sin borrar el proyecto, por si después se quiere ret
 ## Notas de diseño
 
 - El primer fondo oficial vive en `public/assets/marble-cake.png`.
+- El fondo activo puede usar `public/assets/marble-cake-scroll-video.mp4`; el video está pausado y sus frames avanzan con scroll desde `src/main.js`.
 - La dirección inicial es editorial, oscura, cálida y enfocada en el mundo Marble Cake.
 - La prioridad inmediata es composición y tono; tamaño, colores finos y secciones pueden iterarse después.
