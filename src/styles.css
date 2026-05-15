@@ -10,7 +10,10 @@
   --image-zoom: 1.42;
   --image-pan-x: -36dvw;
   --image-pan-y: -30dvh;
-  --media-soften: 0px;
+  --media-soften: 0.88px;
+  --media-saturation: 1.56;
+  --media-contrast: 0.99;
+  --media-brightness: 1;
   --display-letter-width: 0.80;
   --title-opacity: 1;
   --title-y: 0dvh;
@@ -78,9 +81,9 @@ body {
   z-index: 1;
   content: '';
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
-  background-size: 140px 140px;
+  background-size: 110px 110px;
   mix-blend-mode: normal;
-  opacity: 1;
+  opacity: 0.87;
   pointer-events: none;
 }
 
@@ -90,13 +93,11 @@ body {
   height: 100dvh;
   background: #120d0b;
   backface-visibility: hidden;
-  filter: blur(var(--media-soften)) saturate(1.35) contrast(1.08) brightness(1.04);
+  filter: blur(var(--media-soften)) saturate(var(--media-saturation)) contrast(var(--media-contrast)) brightness(var(--media-brightness));
   image-rendering: auto;
   object-fit: cover;
   object-position: left top;
-  transform: translate3d(0, 0, 0);
   user-select: none;
-  will-change: transform, filter;
 }
 
 .image-stage__background-video::-webkit-media-controls {
@@ -221,7 +222,7 @@ body {
   transform-origin: center 62%;
   animation: crazy-letter-warp 1.75s cubic-bezier(0.3, 0, 0.1, 1) infinite;
   animation-delay: calc(var(--i) * -0.13s);
-  will-change: transform, filter;
+  will-change: transform;
 }
 
 .image-stage__crazy-word span:nth-child(2n) {
@@ -235,34 +236,28 @@ body {
 @keyframes crazy-letter-warp {
   0%, 100% {
     transform: translate3d(0, 0, 0) rotate(-1deg) scale3d(0.92, 1.08, 1);
-    filter: blur(0px);
   }
 
   35% {
     transform: translate3d(0, -0.055em, 0) rotate(2.5deg) scale3d(1.12, 0.9, 1);
-    filter: blur(0.25px);
   }
 
   68% {
     transform: translate3d(0, 0.035em, 0) rotate(-3deg) scale3d(0.84, 1.2, 1);
-    filter: blur(0px);
   }
 }
 
 @keyframes crazy-letter-warp-alt {
   0%, 100% {
     transform: translate3d(0, 0.025em, 0) rotate(2deg) scale3d(1.08, 0.92, 1);
-    filter: blur(0px);
   }
 
   42% {
     transform: translate3d(0, -0.075em, 0) rotate(-3.5deg) scale3d(0.82, 1.18, 1);
-    filter: blur(0.2px);
   }
 
   74% {
     transform: translate3d(0, 0, 0) rotate(3deg) scale3d(1.16, 0.88, 1);
-    filter: blur(0px);
   }
 }
 
@@ -377,5 +372,9 @@ body {
   .image-stage__title,
   .image-stage__copy-line {
     filter: none;
+  }
+
+  .image-stage__crazy-word span {
+    animation: none;
   }
 }
