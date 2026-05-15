@@ -23,6 +23,26 @@ npm run dev
 npm run build
 ```
 
+
+## Publicación
+
+El sitio público está en GitHub Pages:
+
+- URL: https://troghx.github.io/Marble-Cake-Family/
+- Fuente de Pages: rama `main`, carpeta `/docs`.
+- `docs/` contiene el build estático publicado; no editarlo a mano salvo emergencia.
+
+Para publicar cambios:
+
+```bash
+npm run build:pages
+git add .
+git commit -m "Describe el cambio"
+git push
+```
+
+Netlify quedó desactivado sin borrar el proyecto, por si después se quiere retomar ese deploy.
+
 ## Notas de diseño
 
 - El primer fondo oficial vive en `public/assets/marble-cake.png`.
