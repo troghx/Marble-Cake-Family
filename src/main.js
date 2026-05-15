@@ -10,7 +10,7 @@ let frameRequest = 0;
 let scrollVideoDuration = 0;
 let lastScrollVideoFrame = -1;
 
-const SCROLL_VIDEO_FRAME_RATE = 24;
+const scrollVideoFrameRate = Number.parseFloat(scrollScrubVideo?.dataset.scrollScrubFps ?? '24') || 24;
 
 const clampProgress = (value) => Math.min(1, Math.max(0, value));
 
@@ -46,7 +46,7 @@ const syncScrollVideo = (progress, force = false) => {
     return;
   }
 
-  const maxFrame = Math.max(1, Math.floor(scrollVideoDuration * SCROLL_VIDEO_FRAME_RATE) - 1);
+  const maxFrame = Math.max(1, Math.floor(scrollVideoDuration * scrollVideoFrameRate) - 1);
   const frame = Math.round(clampProgress(progress) * maxFrame);
 
   if (!force && frame === lastScrollVideoFrame) {
@@ -55,7 +55,7 @@ const syncScrollVideo = (progress, force = false) => {
 
   lastScrollVideoFrame = frame;
 
-  const targetTime = Math.min(scrollVideoDuration - 0.035, frame / SCROLL_VIDEO_FRAME_RATE);
+  const targetTime = Math.min(scrollVideoDuration - 0.035, frame / scrollVideoFrameRate);
 
   if (!Number.isFinite(targetTime) || Math.abs(scrollScrubVideo.currentTime - targetTime) < 0.018) {
     return;
