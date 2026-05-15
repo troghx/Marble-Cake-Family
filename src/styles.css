@@ -7,14 +7,16 @@
 :root {
   --scroll-progress: 0;
   --scroll-progress-inverse: 1;
-  --image-zoom: 1.42;
-  --image-pan-x: -36dvw;
-  --image-pan-y: -30dvh;
-  --media-soften: 0.88px;
-  --media-saturation: 1.56;
+  --image-zoom: 1.25;
+  --image-pan-x: -25dvw;
+  --image-pan-y: -25dvh;
+  --media-soften: 1.17px;
+  --media-saturation: 1.64;
   --media-contrast: 0.99;
-  --media-brightness: 1;
-  --display-letter-width: 0.80;
+  --media-brightness: 0.82;
+  --grain-size: 81px;
+  --grain-opacity: 0.31;
+  --display-letter-width: 0.62;
   --title-opacity: 1;
   --title-y: 0dvh;
   --title-blur: 0px;
@@ -81,9 +83,9 @@ body {
   z-index: 1;
   content: '';
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
-  background-size: 110px 110px;
+  background-size: var(--grain-size) var(--grain-size);
   mix-blend-mode: normal;
-  opacity: 0.87;
+  opacity: var(--grain-opacity);
   pointer-events: none;
 }
 
@@ -376,5 +378,173 @@ body {
 
   .image-stage__crazy-word span {
     animation: none;
+  }
+}
+
+
+.tuning-panel {
+  position: fixed;
+  right: clamp(12px, 1.4vw, 22px);
+  bottom: clamp(12px, 1.4vw, 22px);
+  z-index: 20;
+  display: grid;
+  width: min(340px, calc(100vw - 24px));
+  max-height: min(76dvh, 720px);
+  padding: 13px 13px 12px;
+  overflow: auto;
+  color: rgba(255, 250, 240, 0.92);
+  background: rgba(14, 11, 15, 0.74);
+  border: 1px solid rgba(255, 250, 240, 0.16);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 60px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(18px) saturate(1.2);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  pointer-events: auto;
+}
+
+.tuning-panel[hidden] {
+  display: none;
+}
+
+.tuning-panel__head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(255, 250, 240, 0.12);
+}
+
+.tuning-panel__kicker,
+.tuning-panel__hint,
+.tuning-panel__value {
+  color: rgba(255, 250, 240, 0.58);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.tuning-panel__title {
+  margin-top: 2px;
+  color: #fffaf0;
+  font-size: 0.98rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.tuning-panel__hint {
+  margin-top: 5px;
+  color: rgba(255, 250, 240, 0.5);
+  font-size: 0.62rem;
+  line-height: 1.35;
+  letter-spacing: 0.045em;
+  text-transform: none;
+}
+
+.tuning-panel__close,
+.tuning-panel__button {
+  appearance: none;
+  color: rgba(255, 250, 240, 0.82);
+  background: rgba(255, 250, 240, 0.08);
+  border: 1px solid rgba(255, 250, 240, 0.14);
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.tuning-panel__close {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.tuning-panel__button {
+  padding: 8px 10px;
+}
+
+.tuning-panel__close:hover,
+.tuning-panel__button:hover {
+  background: rgba(255, 250, 240, 0.13);
+  border-color: rgba(255, 250, 240, 0.22);
+}
+
+.tuning-panel__close:active,
+.tuning-panel__button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.tuning-panel__section {
+  display: grid;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 250, 240, 0.1);
+}
+
+.tuning-panel__section:last-of-type {
+  border-bottom: 0;
+}
+
+.tuning-panel__section-title {
+  color: rgba(255, 250, 240, 0.72);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tuning-panel__control {
+  display: grid;
+  gap: 6px;
+}
+
+.tuning-panel__label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tuning-panel__label {
+  color: rgba(255, 250, 240, 0.84);
+  font-size: 0.76rem;
+  font-weight: 760;
+}
+
+.tuning-panel__value {
+  min-width: 58px;
+  text-align: right;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.tuning-panel__range {
+  width: 100%;
+  accent-color: #e4007c;
+}
+
+.tuning-panel__actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .tuning-panel {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: auto;
+    max-height: 58dvh;
   }
 }

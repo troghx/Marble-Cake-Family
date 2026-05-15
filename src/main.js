@@ -135,7 +135,151 @@ const resetProgress = () => {
   writeProgress(currentProgress);
 };
 
+const createTuningPanel = () => {
+  if (!import.meta.env.DEV) {
+    return;
+  }
+
+  const storageKey = 'marble-cake-family:tuning-panel:v1';
+  const panelHiddenKey = 'marble-cake-family:tuning-panel:hidden';
+  const savedValues = JSON.parse(window.localStorage.getItem(storageKey) || '{}');
+
+  const sections = [
+    {
+      title: 'Video',
+      controls: [
+        { label: 'Blur suave', property: '--media-soften', min: 0, max: 2.2, step: 0.01, value: 1.17, unit: 'px' },
+        { label: 'Saturación', property: '--media-saturation', min: 0.8, max: 2.4, step: 0.01, value: 1.64 },
+        { label: 'Contraste', property: '--media-contrast', min: 0.75, max: 1.45, step: 0.01, value: 0.99 },
+        { label: 'Brillo', property: '--media-brightness', min: 0.75, max: 1.35, step: 0.01, value: 0.82 },
+      ],
+    },
+    {
+      title: 'Granulado',
+      controls: [
+        { label: 'Tamaño', property: '--grain-size', min: 44, max: 220, step: 1, value: 81, unit: 'px' },
+        { label: 'Intensidad', property: '--grain-opacity', min: 0, max: 1, step: 0.01, value: 0.31 },
+      ],
+    },
+    {
+      title: 'Encuadre',
+      controls: [
+        { label: 'Zoom fondo', property: '--image-zoom', min: 1, max: 1.8, step: 0.01, value: 1.25 },
+        { label: 'Pan horizontal', property: '--image-pan-x', min: -70, max: 10, step: 0.5, value: -25, unit: 'dvw' },
+        { label: 'Pan vertical', property: '--image-pan-y', min: -70, max: 10, step: 0.5, value: -25, unit: 'dvh' },
+        { label: 'Ancho letras', property: '--display-letter-width', min: 0.62, max: 1, step: 0.01, value: 0.62 },
+      ],
+    },
+  ];
+
+  const allControls = sections.flatMap((section) => section.controls);
+
+  const formatValue = (control, value) => `${Number(value).toFixed(control.step < 1 ? 2 : 0)}${control.unit ?? ''}`;
+  const writeControlValue = (control, value) => {
+    const nextValue = Number(value);
+    root.style.setProperty(control.property, `${nextValue}${control.unit ?? ''}`);
+    savedValues[control.property] = nextValue;
+    window.localStorage.setItem(storageKey, JSON.stringify(savedValues));
+  };
+
+  allControls.forEach((control) => {
+    writeControlValue(control, savedValues[control.property] ?? control.value);
+  });
+
+  const panel = document.createElement('aside');
+  panel.className = 'tuning-panel';
+  panel.setAttribute('aria-label', 'Local visual tuning panel');
+
+  panel.innerHTML = `
+    <div class="tuning-panel__head">
+      <div>
+        <div class="tuning-panel__kicker">Local tuning</div>
+        <div class="tuning-panel__title">Marble Cake controls</div>
+        <div class="tuning-panel__hint">Sólo aparece en dev. Presiona H para mostrar/ocultar.</div>
+      </div>
+      <button class="tuning-panel__close" type="button" data-panel-hide aria-label="Hide panel">×</button>
+    </div>
+    ${sections.map((section) => `
+      <section class="tuning-panel__section">
+        <div class="tuning-panel__section-title">${section.title}</div>
+        ${section.controls.map((control) => {
+          const value = savedValues[control.property] ?? control.value;
+          return `
+            <label class="tuning-panel__control">
+              <span class="tuning-panel__label-row">
+                <span class="tuning-panel__label">${control.label}</span>
+                <span class="tuning-panel__value" data-value-for="${control.property}">${formatValue(control, value)}</span>
+              </span>
+              <input
+                class="tuning-panel__range"
+                type="range"
+                min="${control.min}"
+                max="${control.max}"
+                step="${control.step}"
+                value="${value}"
+                data-property="${control.property}"
+              />
+            </label>
+          `;
+        }).join('')}
+      </section>
+    `).join('')}
+    <div class="tuning-panel__actions">
+      <button class="tuning-panel__button" type="button" data-panel-reset>Reset</button>
+    </div>
+  `;
+
+  document.body.append(panel);
+
+  const setPanelHidden = (hidden) => {
+    panel.hidden = hidden;
+    window.localStorage.setItem(panelHiddenKey, hidden ? '1' : '0');
+  };
+
+  setPanelHidden(false);
+
+  panel.addEventListener('input', (event) => {
+    const input = event.target.closest('[data-property]');
+
+    if (!input) {
+      return;
+    }
+
+    const control = allControls.find((item) => item.property === input.dataset.property);
+
+    if (!control) {
+      return;
+    }
+
+    writeControlValue(control, input.value);
+    panel.querySelector(`[data-value-for="${control.property}"]`).textContent = formatValue(control, input.value);
+  });
+
+  panel.querySelector('[data-panel-hide]').addEventListener('click', () => setPanelHidden(true));
+  panel.querySelector('[data-panel-reset]').addEventListener('click', () => {
+    window.localStorage.removeItem(storageKey);
+
+    allControls.forEach((control) => {
+      writeControlValue(control, control.value);
+      const input = panel.querySelector(`[data-property="${control.property}"]`);
+      const value = panel.querySelector(`[data-value-for="${control.property}"]`);
+      input.value = control.value;
+      value.textContent = formatValue(control, control.value);
+    });
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key.toLowerCase() !== 'h' || event.metaKey || event.ctrlKey || event.altKey) {
+      return;
+    }
+
+    setPanelHidden(!panel.hidden);
+  });
+};
+
 resetProgress();
+createTuningPanel();
+
 window.addEventListener('scroll', requestProgressUpdate, { passive: true });
 window.addEventListener('resize', resetProgress);
 reduceMotionQuery.addEventListener('change', resetProgress);
