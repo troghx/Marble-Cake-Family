@@ -7,9 +7,10 @@
 :root {
   --scroll-progress: 0;
   --scroll-progress-inverse: 1;
-  --image-zoom: 2.08;
-  --image-pan-x: -108dvw;
-  --image-pan-y: -108dvh;
+  --image-zoom: 1.42;
+  --image-pan-x: -36dvw;
+  --image-pan-y: -30dvh;
+  --media-soften: 0.16px;
   --title-opacity: 1;
   --title-y: 0dvh;
   --title-blur: 0px;
@@ -74,9 +75,14 @@ body {
   width: 100vw;
   height: 100dvh;
   background: #120d0b;
+  backface-visibility: hidden;
+  filter: blur(var(--media-soften)) saturate(1.025) contrast(1.015);
+  image-rendering: auto;
   object-fit: cover;
   object-position: left top;
+  transform: translate3d(0, 0, 0);
   user-select: none;
+  will-change: transform, filter;
 }
 
 .image-stage__background-video::-webkit-media-controls {
