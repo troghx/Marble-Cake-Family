@@ -10,7 +10,8 @@
   --image-zoom: 1.42;
   --image-pan-x: -36dvw;
   --image-pan-y: -30dvh;
-  --media-soften: 0.16px;
+  --media-soften: 0px;
+  --display-letter-width: 0.80;
   --title-opacity: 1;
   --title-y: 0dvh;
   --title-blur: 0px;
@@ -66,8 +67,21 @@ body {
 }
 
 .image-stage__drift {
+  isolation: isolate;
   animation: scene-drift 18s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
   transform-origin: center;
+}
+
+.image-stage__drift::after {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  content: '';
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  mix-blend-mode: normal;
+  opacity: 1;
+  pointer-events: none;
 }
 
 .image-stage__background {
@@ -76,7 +90,7 @@ body {
   height: 100dvh;
   background: #120d0b;
   backface-visibility: hidden;
-  filter: blur(var(--media-soften)) saturate(1.025) contrast(1.015);
+  filter: blur(var(--media-soften)) saturate(1.35) contrast(1.08) brightness(1.04);
   image-rendering: auto;
   object-fit: cover;
   object-position: left top;
@@ -92,8 +106,8 @@ body {
 .image-stage__car {
   position: absolute;
   top: clamp(8px, 1.5vw, 24px);
-  right: clamp(10px, 1.6vw, 30px);
-  z-index: 1;
+  right: clamp(26px, 3.2vw, 60px);
+  z-index: 2;
   display: block;
   width: clamp(96px, 15vw, 260px);
   height: auto;
@@ -112,11 +126,11 @@ body {
 
 .image-stage__title {
   position: fixed;
-  top: clamp(94px, 14dvh, 156px);
+  top: clamp(70px, 9dvh, 112px);
   left: clamp(18px, 3.8vw, 64px);
   z-index: 2;
   display: grid;
-  gap: clamp(0px, 0.45vw, 8px);
+  gap: clamp(0px, 0.35vw, 6px);
   margin: 0;
   font-family: 'Goonies', fantasy;
   font-size: clamp(3rem, 7.6vw, 8.8rem);
@@ -129,7 +143,7 @@ body {
   pointer-events: none;
   user-select: none;
   opacity: var(--title-opacity);
-  transform: translate3d(0, var(--title-y), 0) rotate(-3deg);
+  transform: translate3d(0, var(--title-y), 0) rotate(-3deg) scaleX(var(--display-letter-width));
   transform-origin: left center;
   filter: blur(var(--title-blur));
   will-change: transform, opacity, filter;
@@ -156,6 +170,132 @@ body {
   text-shadow:
     0 4px 0 rgba(65, 12, 42, 0.56),
     0 14px 30px rgba(7, 10, 23, 0.5);
+}
+
+.image-stage__title-tagline {
+  display: grid;
+  gap: clamp(0px, 0.3vw, 5px);
+  margin-top: clamp(4px, 0.5vw, 10px);
+  margin-left: clamp(42px, 8vw, 142px);
+  font-size: clamp(1.65rem, 4.25vw, 5.4rem);
+  line-height: 0.78;
+  letter-spacing: 0.035em;
+  -webkit-text-stroke: clamp(0.8px, 0.075vw, 1.4px) rgba(24, 10, 8, 0.58);
+}
+
+.image-stage__title-tagline-white,
+.image-stage__title-tagline-mixed {
+  display: block;
+}
+
+.image-stage__title-tagline-white {
+  color: #fffaf0;
+}
+
+.image-stage__title-tagline-mixed {
+  display: flex;
+  gap: clamp(10px, 1.25vw, 24px);
+}
+
+.image-stage__title-tagline-pink {
+  color: #e4007c;
+}
+
+.image-stage__title-tagline-yellow {
+  color: #ffd21a;
+  text-shadow:
+    0 4px 0 rgba(92, 52, 0, 0.58),
+    0 14px 30px rgba(7, 10, 23, 0.5);
+}
+
+
+
+.image-stage__crazy-word {
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(0px, 0.18vw, 4px);
+}
+
+.image-stage__crazy-word span {
+  display: inline-block;
+  transform-origin: center 62%;
+  animation: crazy-letter-warp 1.75s cubic-bezier(0.3, 0, 0.1, 1) infinite;
+  animation-delay: calc(var(--i) * -0.13s);
+  will-change: transform, filter;
+}
+
+.image-stage__crazy-word span:nth-child(2n) {
+  animation-name: crazy-letter-warp-alt;
+}
+
+.image-stage__crazy-word span:nth-child(3n) {
+  animation-duration: 2.1s;
+}
+
+@keyframes crazy-letter-warp {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(-1deg) scale3d(0.92, 1.08, 1);
+    filter: blur(0px);
+  }
+
+  35% {
+    transform: translate3d(0, -0.055em, 0) rotate(2.5deg) scale3d(1.12, 0.9, 1);
+    filter: blur(0.25px);
+  }
+
+  68% {
+    transform: translate3d(0, 0.035em, 0) rotate(-3deg) scale3d(0.84, 1.2, 1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes crazy-letter-warp-alt {
+  0%, 100% {
+    transform: translate3d(0, 0.025em, 0) rotate(2deg) scale3d(1.08, 0.92, 1);
+    filter: blur(0px);
+  }
+
+  42% {
+    transform: translate3d(0, -0.075em, 0) rotate(-3.5deg) scale3d(0.82, 1.18, 1);
+    filter: blur(0.2px);
+  }
+
+  74% {
+    transform: translate3d(0, 0, 0) rotate(3deg) scale3d(1.16, 0.88, 1);
+    filter: blur(0px);
+  }
+}
+
+
+.image-stage__legend {
+  position: fixed;
+  top: clamp(390px, 54dvh, 560px);
+  left: clamp(24px, 5.2vw, 86px);
+  z-index: 2;
+  display: grid;
+  gap: clamp(5px, 0.5vw, 9px);
+  width: min(72vw, 760px);
+  margin: 0;
+  color: #fffaf0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: clamp(0.82rem, 1.05vw, 1.25rem);
+  font-weight: 650;
+  line-height: 1.18;
+  letter-spacing: 0.012em;
+  text-wrap: balance;
+  pointer-events: none;
+  opacity: var(--title-opacity);
+  filter: blur(var(--title-blur));
+  text-shadow:
+    0 2px 0 rgba(49, 20, 15, 0.45),
+    0 12px 26px rgba(4, 7, 20, 0.7);
+  transform: rotate(-1.2deg);
+  user-select: none;
+  will-change: opacity, filter, transform;
+}
+
+.image-stage__legend span {
+  display: block;
 }
 
 
@@ -198,13 +338,13 @@ body {
 .image-stage__copy-line--one {
   color: #fffaf0;
   opacity: var(--copy-one-opacity);
-  transform: translate3d(-50%, calc(-50% + var(--copy-one-y)), 0) rotate(-2deg);
+  transform: translate3d(-50%, calc(-50% + var(--copy-one-y)), 0) rotate(-2deg) scaleX(var(--display-letter-width));
   filter: blur(var(--copy-one-blur));
 }
 
 .image-stage__copy-line--two {
   opacity: var(--copy-two-opacity);
-  transform: translate3d(-50%, calc(-50% + var(--copy-two-y)), 0) rotate(2deg);
+  transform: translate3d(-50%, calc(-50% + var(--copy-two-y)), 0) rotate(2deg) scaleX(var(--display-letter-width));
   filter: blur(var(--copy-two-blur));
 }
 
