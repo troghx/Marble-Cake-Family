@@ -11,7 +11,6 @@
   --image-pan-x: -36dvw;
   --image-pan-y: -30dvh;
   --media-soften: 0.16px;
-  --car-offset-x: -7dvw;
   --title-opacity: 1;
   --title-y: 0dvh;
   --title-blur: 0px;
@@ -93,16 +92,16 @@ body {
 .image-stage__car {
   position: absolute;
   top: clamp(8px, 1.5vw, 24px);
-  right: clamp(2px, 0.7vw, 12px);
+  right: 0;
   z-index: 1;
   display: block;
-  width: clamp(72px, 10.5vw, 176px);
+  width: clamp(96px, 15vw, 260px);
   height: auto;
   opacity: 0.9;
   filter: saturate(0.92) contrast(0.96) brightness(0.92) drop-shadow(0 12px 16px rgba(6, 10, 22, 0.26));
   pointer-events: none;
   transform: translate3d(
-    calc(var(--car-offset-x) + var(--scroll-progress) * -7dvw),
+    calc(var(--scroll-progress) * -7dvw),
     calc(var(--scroll-progress) * 5dvh),
     0
   );
