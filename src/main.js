@@ -148,17 +148,17 @@ const createTuningPanel = () => {
     {
       title: 'Video',
       controls: [
-        { label: 'Blur suave', property: '--media-soften', min: 0, max: 2.2, step: 0.01, value: 0.27, unit: 'px' },
-        { label: 'Saturación', property: '--media-saturation', min: 0.8, max: 2.4, step: 0.01, value: 1.47 },
-        { label: 'Contraste', property: '--media-contrast', min: 0.75, max: 1.45, step: 0.01, value: 1 },
-        { label: 'Brillo', property: '--media-brightness', min: 0.75, max: 1.35, step: 0.01, value: 0.75 },
+        { label: 'Blur suave', property: '--media-soften', min: 0, max: 2.2, step: 0.01, value: 1.17, unit: 'px' },
+        { label: 'Saturación', property: '--media-saturation', min: 0.8, max: 2.4, step: 0.01, value: 1.64 },
+        { label: 'Contraste', property: '--media-contrast', min: 0.75, max: 1.45, step: 0.01, value: 0.99 },
+        { label: 'Brillo', property: '--media-brightness', min: 0.75, max: 1.35, step: 0.01, value: 0.82 },
       ],
     },
     {
       title: 'Granulado',
       controls: [
-        { label: 'Tamaño', property: '--grain-size', min: 44, max: 220, step: 1, value: 108, unit: 'px' },
-        { label: 'Intensidad', property: '--grain-opacity', min: 0, max: 1, step: 0.01, value: 0.16 },
+        { label: 'Tamaño', property: '--grain-size', min: 44, max: 220, step: 1, value: 81, unit: 'px' },
+        { label: 'Intensidad', property: '--grain-opacity', min: 0, max: 1, step: 0.01, value: 0.31 },
       ],
     },
     {

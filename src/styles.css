@@ -10,12 +10,12 @@
   --image-zoom: 1.25;
   --image-pan-x: -25dvw;
   --image-pan-y: -25dvh;
-  --media-soften: 0.27px;
-  --media-saturation: 1.47;
-  --media-contrast: 1;
-  --media-brightness: 0.75;
-  --grain-size: 108px;
-  --grain-opacity: 0.16;
+  --media-soften: 1.17px;
+  --media-saturation: 1.64;
+  --media-contrast: 0.99;
+  --media-brightness: 0.82;
+  --grain-size: 81px;
+  --grain-opacity: 0.31;
   --display-letter-width: 0.62;
   --title-opacity: 1;
   --title-y: 0dvh;
