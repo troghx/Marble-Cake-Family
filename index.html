@@ -39,47 +39,62 @@
             data-scroll-scrub-fps="60"
             aria-hidden="true"
           ></video>
-          <img
-            class="image-stage__car"
-            src="/assets/car-and-dummee.png"
-            alt="Car and Dummee artwork"
-          />
         </div>
       </div>
-      <h1 class="image-stage__title" aria-label="Marble Cake Family I had crazy visions">
-        <span class="image-stage__title-main">
-          <span>Marble</span>
-          <span>Cake</span>
-        </span>
-        <span class="image-stage__title-accent">Family</span>
-        <span class="image-stage__title-tagline" aria-hidden="true">
-          <span class="image-stage__title-tagline-white">Yo Son</span>
-          <span class="image-stage__title-tagline-white">I Had</span>
-          <span class="image-stage__title-tagline-mixed" aria-label="Crazy Visions">
-            <span class="image-stage__title-tagline-pink image-stage__crazy-word" aria-hidden="true">
-              <span style="--i: 0">C</span>
-              <span style="--i: 1">R</span>
-              <span style="--i: 2">A</span>
-              <span style="--i: 3">Z</span>
-              <span style="--i: 4">Y</span>
-            </span>
-            <span class="image-stage__title-tagline-yellow image-stage__crazy-word" aria-hidden="true">
-              <span style="--i: 5">V</span>
-              <span style="--i: 6">I</span>
-              <span style="--i: 7">S</span>
-              <span style="--i: 8">I</span>
-              <span style="--i: 9">O</span>
-              <span style="--i: 10">N</span>
-              <span style="--i: 11">S</span>
-            </span>
-          </span>
-        </span>
+
+      <nav class="image-stage__nav" aria-label="Primary navigation">
+        <a class="image-stage__nav-link image-stage__nav-link--active" href="#home">Home</a>
+        <a class="image-stage__nav-link" href="#story">Our Story</a>
+        <a class="image-stage__nav-link" href="#merch">Merch</a>
+        <a class="image-stage__nav-link" href="#gallery">Gallery</a>
+        <a class="image-stage__nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <h1 class="image-stage__brand" id="home" aria-label="Marble Cake Family">
+        <span class="image-stage__brand-main">Marble</span>
+        <span class="image-stage__brand-main image-stage__brand-main--cake">Cake</span>
+        <span class="image-stage__brand-accent">Family</span>
       </h1>
-      <p class="image-stage__legend">
-        <span>A family. A vibe. A Universe of our own.</span>
-        <span>Marble Cake Family is more than a brand.</span>
-        <span>It's a... Family!</span>
-      </p>
+
+      <section class="image-stage__headline" aria-label="Yo son I had crazy visions">
+        <span class="image-stage__headline-white">Yo Son</span>
+        <span class="image-stage__headline-white image-stage__headline-white--small">I Had</span>
+        <span class="image-stage__headline-pink image-stage__crazy-word" aria-label="Crazy">
+          <span style="--i: 0">C</span>
+          <span style="--i: 1">R</span>
+          <span style="--i: 2">A</span>
+          <span style="--i: 3">Z</span>
+          <span style="--i: 4">Y</span>
+        </span>
+        <span class="image-stage__headline-yellow image-stage__crazy-word" aria-label="Visions">
+          <span style="--i: 5">V</span>
+          <span style="--i: 6">I</span>
+          <span style="--i: 7">S</span>
+          <span style="--i: 8">I</span>
+          <span style="--i: 9">O</span>
+          <span style="--i: 10">N</span>
+          <span style="--i: 11">S</span>
+        </span>
+      </section>
+
+      <a class="image-stage__cta" href="#contact" aria-label="Join the Marble Cake Family">
+        <span>Join the Family</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="image-stage__cta-icon">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+          <path d="M3.8 12h16.4M12 3.2c2.4 2.2 3.6 5.2 3.6 8.8s-1.2 6.6-3.6 8.8M12 3.2C9.6 5.4 8.4 8.4 8.4 12s1.2 6.6 3.6 8.8" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" />
+        </svg>
+      </a>
+
+      <img
+        class="image-stage__ship"
+        src="/assets/knucklez-ship.png"
+        alt="Knucklez ship artwork"
+      />
+      <img
+        class="image-stage__space-car"
+        src="/assets/dummeez-space-car.png"
+        alt="Dummeez space car artwork"
+      />
     </main>
     <script type="module" src="/src/main.js"></script>
   </body>

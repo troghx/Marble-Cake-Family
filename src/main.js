@@ -236,7 +236,7 @@ const createTuningPanel = () => {
     window.localStorage.setItem(panelHiddenKey, hidden ? '1' : '0');
   };
 
-  setPanelHidden(false);
+  setPanelHidden(true);
 
   panel.addEventListener('input', (event) => {
     const input = event.target.closest('[data-property]');
