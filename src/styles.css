@@ -362,7 +362,7 @@ body {
     contrast(1.06)
     drop-shadow(0 24px 28px rgba(0, 0, 0, 0.48))
     drop-shadow(0 0 26px rgba(255, 88, 0, 0.16));
-  transform: translate3d(calc(var(--scroll-progress) * 4dvw), calc(var(--scroll-progress) * 3dvh), 0) scaleX(-1) rotate(1deg);
+  transform: translate3d(calc(var(--scroll-progress) * 4dvw), calc(var(--scroll-progress) * 3dvh), 0) rotate(1deg);
   transform-origin: 50% 80%;
 }
 
